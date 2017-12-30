@@ -1,0 +1,14 @@
+{
+  "name": "googlealex",
+  "version": "1.0.0",
+  "description": "This bot has google support.",
+  "main": "GoogleAlex.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "author": "Alex",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  }
+}
