@@ -110,7 +110,7 @@ function getGame(game) {
 
         case "rb6":
             this.name = "Rainbow Six Siege";
-            this.description = "This is a first person shooter with 2 team where you have to accomplish a objective like rescueing a hostage or securing the container. <>"
+            this.description = "This is a first person shooter with 2 team where you have to accomplish a objective like rescueing a hostage or securing the container. <:join:396981957042372610>"
             this.thumbnail = "https://github.com/cyborggeneraal/googleAlex/blob/master/rb6.png?raw=true";
             this.valid = true;
         break;
