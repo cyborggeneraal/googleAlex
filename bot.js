@@ -83,8 +83,10 @@ bot.on('message', (message) => {
                         }
                     };
 
-                //send to session channel
+	            //send to session channel
 	            session[sessionCounter] = bot.channels.get('396650049314095104').send(session);
+
+	            bot.add_reaction(session[sessionCounter], '<:join:396981957042372610>');
 
 	            message.delete();
 
@@ -110,7 +112,7 @@ function getGame(game) {
 
         case "rb6":
             this.name = "Rainbow Six Siege";
-            this.description = "This is a first person shooter with 2 team where you have to accomplish a objective like rescueing a hostage or securing the container. <:join:396981957042372610>"
+            this.description = "This is a first person shooter with 2 team where you have to accomplish a objective like rescueing a hostage or securing the container."
             this.thumbnail = "https://github.com/cyborggeneraal/googleAlex/blob/master/rb6.png?raw=true";
             this.valid = true;
         break;
