@@ -1,1 +1,1 @@
-web: node GoogleAlex.js
+web: node bot.js
