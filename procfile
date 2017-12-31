@@ -1,1 +1,1 @@
-worker: node GoogleAlex.js
+web: node GoogleAlex.js
