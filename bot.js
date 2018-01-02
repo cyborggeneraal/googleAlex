@@ -6,12 +6,17 @@ const PREFIX = ">";
 
 let sessionCounter = 1;
 
-var sessionChannel = bot.channels.get('396650049314095104');
+var sessionChannel = '396650049314095104';
+
+let session = [];
 
 bot.on('message', (message) => {
 
     //fails if send by the bot
-	if (message.author.equals(bot.user)) return;
+    if (message.author.equals(bot.user)) {
+        //console.log(getMessage(bot.channels.get(sessionChannel), message.id));
+        return;
+    }
 
     //fails if it hasn't the right prefix
 	if (!message.content.startsWith(PREFIX)) return;
@@ -49,52 +54,46 @@ bot.on('message', (message) => {
 
         //command "startsession (game)"
 	    case "startsession":
+	    case "ss":
 
             //check length
 	        if (args.length >= 2) {
 
-                //get args
-	            var Game = new getGame(args[1]);
+	            //get args
+	            var currentGame = new getGame(args[1]);
 
 	            //check valid game
-	            if (Game.valid == false) {
+	            if (currentGame.valid == false) {
 	                message.channel.send('This is not a valid game');
 	                return;
 	            }
 
-                //get other variables
-	            Host = message.author;
+	            //get other variables
+	            console.log(session);
+	            session[sessionCounter] = {
+	                id: 0,
+	                playersList: [],
+	                Game: currentGame,
+	                host: message.author
+	            }
 
-                //make Embed
-	            var session =
-                    {
-                        embed: {
-                            title: "**session " + sessionCounter.toString() + "**",
-                            thumbnail: {
-                                url: Game.thumbnail
-                            },
-                            author: {
-                                name: message.author.username
-                            },
-                            fields: [{
-                                name: Game.name,
-                                value: Game.description
-                            }]
-                        }
-                    };
+	            //make Embed
+	            var sessionEmbed = getSessionEmbed(session[sessionCounter]);
 
 	            //send to session channel
-	            session[sessionCounter] = bot.channels.get('396650049314095104').send(session);
+	            var messageSession = bot.channels.get('396650049314095104').send(sessionEmbed)
+                .then(function (message) {
+                    message.react(':join:396981957042372610')
+                });
 
-	            bot.add_reaction(session[sessionCounter], '<:join:396981957042372610>');
-
+	            sessionCounter++;
 	            message.delete();
 
-			} 
+	        }
 	        else {
-                //fails if too few arguments
-				message.channel.send('Too few arguments');
-			}
+	            //fails if too few arguments
+	            message.channel.send('Too few arguments');
+	        }
 
 	    break;
 
@@ -103,6 +102,57 @@ bot.on('message', (message) => {
 			message.channel.send("Google doesn't accept this command");
 
 	}
+
+});
+
+bot.on("messageReactionAdd", (reaction, user) => {
+
+    //check reaction from is from #session
+    if (reaction.message.channel.name == "sessions") {
+
+        //check it's from the bot itself or not
+        if (user.equals(bot.user)) {
+            //set the session properties
+
+            //get the session number
+            var currentSession = sessionCounter - 1;
+
+            //add new properties
+            session[currentSession].id = reaction.message.id;
+
+        } else {
+            //check which session matches
+            var currentSession = 1;
+            for (var i = 1; i < session.length; i++) {
+
+                //check this one matches
+                if (session[i].id == reaction.message.id) {
+                    //set currentSession
+                    currentSession = i;
+                    
+                    //end loop
+                    break;
+                }
+            }
+
+            //check the name already exist
+            var exists = false;
+            for (var i = 0; i < session[currentSession].playersList.length; i++) {
+                if (user.username == session[currentSession].playersList[i]) {
+                    exists = true;
+                    break;
+                }
+            }
+            //add to players list if it doesnt exist
+            if (exists == false) {
+                //add player to list
+                session[currentSession].playersList[session[currentSession].playersList.length] = user.username;
+
+                //update message
+                reaction.message.edit(getSessionEmbed(session[currentSession]));
+            }
+        }
+    }
 
 });
 
@@ -128,6 +178,54 @@ function getGame(game) {
             this.valid = false;
         break;
     }
+}
+
+function setPlayersList(currentSession) {
+
+    //check if there are any players joined
+    if (currentSession.playersList.length > 0) {
+
+        //start with the list
+        var list = currentSession.playersList[0].toString();
+
+        //add every player to the list
+        for (i = 1; i < currentSession.playersList.length; i++) {
+            list += "\n" + currentSession.playersList[i].toString();
+        }
+
+        //return the list
+        return list;
+    }
+    else {
+
+        //return there are no players joined
+        return 'No players has joined';
+    }
+}
+
+function getSessionEmbed(currentSession) {
+    var embed =
+    {
+        embed: {
+                color: 3447003,
+                title: "**session " + sessionCounter.toString() + "**",
+                thumbnail: {
+                url: currentSession.Game.thumbnail
+                },
+            author: {
+               name: 'host'
+            },
+            fields: [{
+                name: currentSession.Game.name,
+                value: currentSession.Game.description
+            },
+            {
+                name: 'List of players',
+                value: setPlayersList(currentSession)
+            }]
+        }
+    };
+    return embed;
 }
 
 bot.login("Mzc1NzMyNzk4NTYxOTc2MzIx.DSkE8Q.buM5jfaUxEeKICAcSwMOPrBH30M");
