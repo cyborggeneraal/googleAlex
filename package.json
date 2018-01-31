@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This bot has google support.",
   "main": "GoogleAlex.js",
+  "engines": {
+    "node": "8.x"
+  },
   "scripts": {
     "start": "node bot.js"
   },
