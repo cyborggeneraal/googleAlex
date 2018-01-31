@@ -1,31 +1,14 @@
 {
-  "name": "discord-js-moderator",
+  "name": "googlealex",
   "version": "1.0.0",
-  "description": "A bot used to help moderate discord.js",
+  "description": "This bot has google support.",
+  "main": "GoogleAlex.js",
   "scripts": {
-    "test": "eslint src/",
-    "start": "npm run update && node src/index.js",
-    "update": "git pull && npm install"
+    "start": "node bot.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hydrabolt/discord-js-moderator.git"
-  },
-  "keywords": [
-    "discord",
-    "moderator",
-    "discord.js",
-    "moderate",
-    "bot"
-  ],
-  "author": "Amish Shah <amishshah.2k@gmail.com>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/hydrabolt/discord-js-moderator/issues"
-  },
-  "homepage": "https://github.com/hydrabolt/discord-js-moderator#readme",
+  "author": "Alex",
+  "license": "ISC",
   "dependencies": {
-    "discord.js": "github:hydrabolt/discord.js#master",
-    "github-webhook-handler": "^0.6.0"
+    "discord.js": "^11.2.1"
   }
 }
