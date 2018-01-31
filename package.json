@@ -9,6 +9,7 @@
   "author": "Alex",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "discord.js": "github:hydrabolt/discord.js#master",
+    "github-webhook-handler": "^0.6.0"
   }
 }
